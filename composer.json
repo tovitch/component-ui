@@ -1,16 +1,16 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "tovitch/component-ui",
+    "description": "Blade component package",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "tovitch",
+        "component-ui"
     ],
-    "homepage": "https://github.com/:vendor_name/:package_name",
+    "homepage": "https://github.com/tovitch/component-ui",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "tovitch",
+            "email": "tovitch@icloud.com",
             "homepage": "https://tovitch.dev",
             "role": "Developer"
         }
@@ -28,13 +28,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Tovitch\\Skeleton\\": "src",
-            "Tovitch\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Tovitch\\BladeUI\\": "src",
+            "Tovitch\\BladeUI\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tovitch\\Skeleton\\Tests\\": "tests"
+            "Tovitch\\BladeUI\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -49,10 +49,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tovitch\\Skeleton\\SkeletonServiceProvider"
+                "Tovitch\\BladeUI\\BladeUIServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "Tovitch\\Skeleton\\SkeletonFacade"
+                "BladeUI": "Tovitch\\BladeUI\\BladeUIFacade"
             }
         }
     },

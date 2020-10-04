@@ -1,9 +1,9 @@
 <?php
 
-namespace Tovitch\Skeleton\Tests;
+namespace Tovitch\BladeUI\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use Tovitch\Skeleton\SkeletonServiceProvider;
+use Tovitch\BladeUI\BladeUIServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TestCase extends Orchestra
@@ -13,7 +13,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn(string $modelName) => 'Tovitch\\Skeleton\\Database\\Factories\\' . class_basename(
+            fn(string $modelName) => 'Tovitch\\BladeUI\\Database\\Factories\\' . class_basename(
                     $modelName
                 ) . 'Factory'
         );
@@ -32,7 +32,7 @@ class TestCase extends Orchestra
         );
 
         /*
-        include_once __DIR__.'/../database/migrations/create_skeleton_table.php.stub';
+        include_once __DIR__.'/../database/migrations/create_component_ui_table.php.stub';
         (new \CreatePackageTable())->up();
         */
     }
@@ -40,7 +40,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            SkeletonServiceProvider::class,
+            BladeUIServiceProvider::class,
         ];
     }
 }

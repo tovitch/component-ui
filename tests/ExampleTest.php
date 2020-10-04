@@ -1,6 +1,6 @@
 <?php
 
-namespace Tovitch\Skeleton\Tests;
+namespace Tovitch\BladeUI\Tests;
 
 class ExampleTest extends TestCase
 {

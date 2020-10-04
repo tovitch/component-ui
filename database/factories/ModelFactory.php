@@ -1,6 +1,6 @@
 <?php
 
-namespace Tovitch\Skeleton\Database\Factories;
+namespace Tovitch\BladeUI\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

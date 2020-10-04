@@ -1,12 +1,12 @@
 <?php
 
-namespace Tovitch\Skeleton\Commands;
+namespace Tovitch\BladeUI\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class BladeUICommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'component-ui';
 
     public $description = 'My command';
 

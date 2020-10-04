@@ -1,30 +1,30 @@
 <?php
 
-namespace Tovitch\Skeleton;
+namespace Tovitch\BladeUI;
 
 use Illuminate\Support\ServiceProvider;
-use Tovitch\Skeleton\Commands\SkeletonCommand;
+use Tovitch\BladeUI\Commands\BladeUICommand;
 
-class SkeletonServiceProvider extends ServiceProvider
+class BladeUIServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->publishes(
                 [
-                    __DIR__ . '/../config/skeleton.php' => config_path('skeleton.php'),
+                    __DIR__ . '/../config/component-ui.php' => config_path('component-ui.php'),
                 ],
                 'config'
             );
 
             $this->publishes(
                 [
-                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/skeleton'),
+                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/component-ui'),
                 ],
                 'views'
             );
 
-            $migrationFileName = 'create_skeleton_table.php';
+            $migrationFileName = 'create_component_ui_table.php';
             if (! $this->migrationFileExists($migrationFileName)) {
                 $this->publishes(
                     [
@@ -39,12 +39,12 @@ class SkeletonServiceProvider extends ServiceProvider
 
             $this->commands(
                 [
-                    SkeletonCommand::class,
+                    BladeUICommand::class,
                 ]
             );
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'skeleton');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'component-ui');
     }
 
     public static function migrationFileExists(string $migrationFileName): bool
@@ -61,6 +61,6 @@ class SkeletonServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/skeleton.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__ . '/../config/component-ui.php', 'component-ui');
     }
 }
