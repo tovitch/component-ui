@@ -3,6 +3,7 @@
 namespace Tovitch\BladeUI;
 
 use Illuminate\Support\ServiceProvider;
+use Tovitch\BladeUI\View\Components\Svg;
 use Tovitch\BladeUI\Commands\BladeUICommand;
 
 class BladeUIServiceProvider extends ServiceProvider
@@ -20,6 +21,9 @@ class BladeUIServiceProvider extends ServiceProvider
             $this->publishes(
                 [
                     __DIR__ . '/../resources/views' => base_path('resources/views/vendor/component-ui'),
+                    __DIR__ . '/../resources/views' => base_path(
+                        'resources/views/vendor/component-ui'
+                    ),
                 ],
                 'views'
             );
@@ -43,6 +47,10 @@ class BladeUIServiceProvider extends ServiceProvider
                 ]
             );
         }
+
+        $this->loadViewComponentsAs('blade-ui', [
+            Svg::class,
+        ]);
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'component-ui');
     }
