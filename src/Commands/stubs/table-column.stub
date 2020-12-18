@@ -1,0 +1,20 @@
+<?php
+
+namespace {{ namespace }};
+
+use Tovitch\BladeUI\View\Components\Table\TableRow;
+
+class {{ class }} extends TableRow
+{
+    /**
+     * Get the view / contents that represent the row.
+     *
+     * @param mixed $row
+     *
+     * @return \Illuminate\Contracts\View\View|string
+     */
+    public function render($row)
+    {
+        //
+    }
+}

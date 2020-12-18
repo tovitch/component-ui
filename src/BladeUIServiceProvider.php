@@ -2,9 +2,12 @@
 
 namespace Tovitch\BladeUI;
 
+use Tovitch\Svg\Svg;
 use Illuminate\Support\ServiceProvider;
-use Tovitch\BladeUI\View\Components\Svg;
 use Tovitch\BladeUI\Commands\BladeUICommand;
+use Tovitch\BladeUI\View\Components\Table\Table;
+use Tovitch\BladeUI\Commands\TableRowMakeCommand;
+use Tovitch\BladeUI\View\Components\Table\TableColumn;
 
 class BladeUIServiceProvider extends ServiceProvider
 {
@@ -20,7 +23,6 @@ class BladeUIServiceProvider extends ServiceProvider
 
             $this->publishes(
                 [
-                    __DIR__ . '/../resources/views' => base_path('resources/views/vendor/component-ui'),
                     __DIR__ . '/../resources/views' => base_path(
                         'resources/views/vendor/component-ui'
                     ),
@@ -28,43 +30,28 @@ class BladeUIServiceProvider extends ServiceProvider
                 'views'
             );
 
-            $migrationFileName = 'create_component_ui_table.php';
-            if (! $this->migrationFileExists($migrationFileName)) {
-                $this->publishes(
-                    [
-                        __DIR__
-                        . "/../database/migrations/{$migrationFileName}.stub" => database_path(
-                            'migrations/' . date('Y_m_d_His', time()) . '_' . $migrationFileName
-                        ),
-                    ],
-                    'migrations'
-                );
-            }
-
-            $this->commands(
+            $this->publishes(
                 [
-                    BladeUICommand::class,
-                ]
+                    __DIR__ . "/../resources/views/table.blade.php" => base_path(
+                        'resources/views/vendor/component-ui/table.blade.php'
+                    ),
+                ],
+                'table'
             );
+
+            $this->commands([
+                BladeUICommand::class,
+                TableRowMakeCommand::class,
+            ]);
         }
 
-        $this->loadViewComponentsAs('blade-ui', [
-            Svg::class,
+        $this->loadViewComponentsAs(config('component-ui.prefix'), [
+            'svg'          => Svg::class,
+            'table'        => Table::class,
+            'table-column' => TableColumn::class,
         ]);
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'component-ui');
-    }
-
-    public static function migrationFileExists(string $migrationFileName): bool
-    {
-        $len = strlen($migrationFileName);
-        foreach (glob(database_path("migrations/*.php")) as $filename) {
-            if ((substr($filename, -$len) === $migrationFileName)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function register()
