@@ -50,30 +50,32 @@
         </tr>
         </thead>
 
-        <tbody class="hidden" wire:loading.remove.class="hidden">
-        @foreach(range(1, $data->perPage()) as $index)
-            <tr {{ $resolveRowStyle($loop, $data[0]) }}>
-                @foreach($__children as $child)
-                    <td
-                        {{ $resolveDataStyle($loop, $data[0], $child) }}
-                        {{ $child->alignment() }}
-                    >
-                    <span class="rounded text-transparent bg-gray-300 dark:bg-gray-600"
-                    >{{ str_repeat('_', rand(15, 20)) }}</span>
-                    </td>
-                @endforeach
-                @isset($data[0]['routes'])
-                    <td
-                        {{ $resolveDataStyle($loop, $data[0], $child) }}
-                        {{ $child->alignment() }}
-                        width="40"
-                    >
-                        <x-blade-ui-svg class="text-gray-600" name="dots-horizontal" />
-                    </td>
-                @endisset
-            </tr>
-        @endforeach
-        </tbody>
+        @if($data instanceof \Illuminate\Pagination\AbstractPaginator && $data->hasPages())
+            <tbody class="hidden" wire:loading.remove.class="hidden">
+            @foreach(range(1, $data->perPage()) as $index)
+                <tr {{ $resolveRowStyle($loop, $data[0]) }}>
+                    @foreach($__children as $child)
+                        <td
+                            {{ $resolveDataStyle($loop, $data[0], $child) }}
+                            {{ $child->alignment() }}
+                        >
+                        <span class="rounded text-transparent bg-gray-300 dark:bg-gray-600"
+                        >{{ str_repeat('_', rand(15, 20)) }}</span>
+                        </td>
+                    @endforeach
+                    @isset($data[0]['routes'])
+                        <td
+                            {{ $resolveDataStyle($loop, $data[0], $child) }}
+                            {{ $child->alignment() }}
+                            width="40"
+                        >
+                            <x-blade-ui-svg class="text-gray-600" name="dots-horizontal" />
+                        </td>
+                    @endisset
+                </tr>
+            @endforeach
+            </tbody>
+        @endif
 
         <tbody wire:loading.remove>
         @forelse($data as $row)

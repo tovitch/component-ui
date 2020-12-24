@@ -1,13 +1,13 @@
 <?php
 
-namespace Tovitch\BladeUI\Tests\Table;
+namespace Tovitch\BladeUI\Tests\Components\Table;
 
 use Illuminate\Support\HtmlString;
 use Tovitch\BladeUI\Tests\TestCase;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tovitch\BladeUI\View\Components\Table\Table;
-use Tovitch\BladeUI\View\Components\Table\TableRow;
+use Tovitch\BladeUI\Tests\Mocks\UserInformationRow;
 use Tovitch\BladeUI\View\Components\Table\TableColumn;
 
 class TableTest extends TestCase
@@ -75,7 +75,10 @@ class TableTest extends TestCase
      */
     public function it_has_default_modifiers(string $attribute, string $expectedClasses)
     {
-        $data = new LengthAwarePaginator(collect([['username' => 'John Doe']]), 1, 15);
+        $data = new LengthAwarePaginator(collect([
+            ['username' => 'John Doe'],
+            ['username' => 'Jane Doe']
+        ]), 2, 15);
 
         $component = new Table($data);
         $component->attributes = new ComponentAttributeBag([$attribute => true]);
@@ -94,13 +97,13 @@ class TableTest extends TestCase
     public function modifiers()
     {
         return [
-            'striped modifier' => [
+            'striped modifier'   => [
                 'striped', 'bg-gray-100',
             ],
             'hoverable modifier' => [
                 'hoverable', 'hover:bg-gray-100',
             ],
-            'bordered modifier' => [
+            'bordered modifier'  => [
                 'bordered', 'border-b dark:border-gray-600',
             ],
         ];
@@ -122,7 +125,7 @@ class TableTest extends TestCase
             'User',
             'username',
             null,
-            UserInformationsRow::class
+            UserInformationRow::class
         );
 
         $view = $component->render();
@@ -139,18 +142,5 @@ class TableTest extends TestCase
 blade;
 
         $this->assertStringContainsString($needle, $content);
-    }
-}
-
-class UserInformationsRow extends TableRow
-{
-    public function render($row)
-    {
-        return <<<blade
-<div>
-    <p>{$row['username']}</p>
-    <p>{$row['email']}</p>
-</div>
-blade;
     }
 }
