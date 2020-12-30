@@ -24,9 +24,7 @@
                                     data-sort="{{ $sort }}"
                                     stroke-width="{{ $sort === 'asc' ? '5' : '3' }}"
                                     class="{{ $sort === 'asc' ? '' : 'text-gray-300' }}"
-                                >
-                                    <path d="M5 15l7-7 7 7"></path>
-                                </x-blade-ui-svg>
+                                />
                                 <x-blade-ui-svg
                                     name="chevron-down"
                                     width="15"
@@ -34,9 +32,7 @@
                                     data-sort="{{ $sort }}"
                                     stroke-width="{{ $sort === 'desc' ? '5' : '3' }}"
                                     class="{{ $sort === 'desc' ? '' : 'text-gray-300' }}"
-                                >
-                                    <path d="M19 9l-7 7-7-7"></path>
-                                </x-blade-ui-svg>
+                                />
                             </span>
                         </button>
                     @else
@@ -50,47 +46,26 @@
         </tr>
         </thead>
 
-        @if($data instanceof \Illuminate\Pagination\AbstractPaginator && $data->hasPages())
-            <tbody class="hidden" wire:loading.remove.class="hidden">
-            @foreach(range(1, $data->perPage()) as $index)
-                <tr {{ $resolveRowStyle($loop, $data[0]) }}>
-                    @foreach($__children as $child)
-                        <td
-                            {{ $resolveDataStyle($loop, $data[0], $child) }}
-                            {{ $child->alignment() }}
-                        >
-                        <span class="rounded text-transparent bg-gray-300 dark:bg-gray-600"
-                        >{{ str_repeat('_', rand(15, 20)) }}</span>
-                        </td>
-                    @endforeach
-                    @isset($data[0]['routes'])
-                        <td
-                            {{ $resolveDataStyle($loop, $data[0], $child) }}
-                            {{ $child->alignment() }}
-                            width="40"
-                        >
-                            <x-blade-ui-svg class="text-gray-600" name="dots-horizontal" />
-                        </td>
-                    @endisset
-                </tr>
-            @endforeach
-            </tbody>
-        @endif
-
-        <tbody wire:loading.remove>
+        <tbody>
         @forelse($data as $row)
             <tr {{ $resolveRowStyle($loop, $row) }}>
                 @foreach($__children as $child)
-                    <td
-                        {{ $resolveDataStyle($loop, $row, $child) }}
-                        {{ $child->alignment() }}
-                    >
-                        @if($child->isDate())
-                            <span title="{{ $row[$child->attribute] }}">
-                                {{ \Carbon\Carbon::parse($row[$child->attribute])->format($child->date) }}
+                    <td {{ $resolveDataStyle($loop, $row, $child) }} {{ $child->alignment() }}>
+                        <div class="hidden" wire:loading.class.remove="hidden">
+                            <x-blade-ui-placeholder text />
+                        </div>
+
+                        <div wire:loading.remove>
+                            @if($child->isDate())
+                                <span title="{{ $row[$child->attribute] }}">
+                                    @if($child->date !== '1')
+                                        {{ \Carbon\Carbon::parse($row[$child->attribute])->format($child->date) }}
+                                    @else
+                                        {{ \Carbon\Carbon::parse($row[$child->attribute]) }}
+                                    @endif
                             </span>
-                        @elseif($child->isBoolean())
-                            <span title="{{ (bool) $row[$child->attribute] ? 'Actif' : 'Inactif' }}">
+                            @elseif($child->isBoolean())
+                                <span title="{{ (bool) $row[$child->attribute] ? 'Actif' : 'Inactif' }}">
                                 <svg
                                     class="w-4 h-4 {{ (bool) $row[$child->attribute] ? 'text-green-500' : 'text-red-500' }}"
                                     fill="currentColor"
@@ -100,11 +75,12 @@
                                     <circle r="10" cx="12" cy="12"></circle>
                                 </svg>
                             </span>
-                        @elseif(! is_null($child->component))
-                            {!! $child->renderComponentView($row) !!}
-                        @else
-                            {{ $row[$child->attribute] ?? $child->attributes->get('empty-message') }}
-                        @endif
+                            @elseif(! is_null($child->component))
+                                {!! $child->renderComponentView($row) !!}
+                            @else
+                                {{ $row[$child->attribute] ?? $child->attributes->get('empty-message') }}
+                            @endif
+                        </div>
                     </td>
                 @endforeach
 

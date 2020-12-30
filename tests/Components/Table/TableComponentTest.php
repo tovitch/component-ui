@@ -3,14 +3,14 @@
 namespace Tovitch\BladeUI\Tests\Components\Table;
 
 use Illuminate\Support\HtmlString;
-use Tovitch\BladeUI\Tests\TestCase;
+use Tovitch\BladeUI\Tests\ComponentTestCase;
 use Illuminate\View\ComponentAttributeBag;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tovitch\BladeUI\View\Components\Table\Table;
 use Tovitch\BladeUI\Tests\Mocks\UserInformationRow;
 use Tovitch\BladeUI\View\Components\Table\TableColumn;
 
-class TableTest extends TestCase
+class TableComponentTest extends ComponentTestCase
 {
     /** @test */
     public function it_render_the_component()

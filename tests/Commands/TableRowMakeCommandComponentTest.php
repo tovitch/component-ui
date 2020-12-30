@@ -4,12 +4,12 @@ namespace Tovitch\BladeUI\Tests\Commands;
 
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert;
-use Tovitch\BladeUI\Tests\TestCase;
+use Tovitch\BladeUI\Tests\ComponentTestCase;
 use Illuminate\Filesystem\Filesystem;
 use Tovitch\BladeUI\Tests\Mocks\Filesystem as FilesystemMock;
 use Tovitch\BladeUI\Commands\TableRowMakeCommand;
 
-class TableRowMakeCommandTest extends TestCase
+class TableRowMakeCommandComponentTest extends ComponentTestCase
 {
     protected $filesystem;
 
