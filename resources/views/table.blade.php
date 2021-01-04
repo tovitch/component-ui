@@ -59,15 +59,15 @@
                             @if($child->isDate())
                                 <span title="{{ $row[$child->attribute] }}">
                                     @if($child->date !== '1')
-                                        {{ \Carbon\Carbon::parse($row[$child->attribute])->format($child->date) }}
+                                        {{ \Carbon\Carbon::parse(data_get($row, $child->attribute))->format($child->date) }}
                                     @else
-                                        {{ \Carbon\Carbon::parse($row[$child->attribute]) }}
+                                        {{ \Carbon\Carbon::parse(data_get($row, $child->attribute)) }}
                                     @endif
-                            </span>
+                                </span>
                             @elseif($child->isBoolean())
-                                <span title="{{ (bool) $row[$child->attribute] ? 'Actif' : 'Inactif' }}">
+                                <span title="{{ (bool) data_get($row, $child->attribute) ? 'Actif' : 'Inactif' }}">
                                 <svg
-                                    class="w-4 h-4 {{ (bool) $row[$child->attribute] ? 'text-green-500' : 'text-red-500' }}"
+                                    class="w-4 h-4 {{ (bool) data_get($row, $child->attribute) ? 'text-green-500' : 'text-red-500' }}"
                                     fill="currentColor"
                                     viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@
                             @elseif(! is_null($child->component))
                                 {!! $child->renderComponentView($row) !!}
                             @else
-                                {{ $row[$child->attribute] ?? $child->attributes->get('empty-message') }}
+                                {{ data_get($row, $child->attribute, $child->attributes->get('empty-message')) }}
                             @endif
                         </div>
                     </td>

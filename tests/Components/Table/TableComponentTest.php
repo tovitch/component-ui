@@ -32,6 +32,25 @@ class TableComponentTest extends ComponentTestCase
     }
 
     /** @test */
+    public function it_can_display_nested_attributes()
+    {
+        $data = new LengthAwarePaginator(collect([['company' => ['name' => 'Acme']]]), 1, 15);
+
+        $component = new Table($data);
+        $column = new TableColumn('Company', 'company.name');
+        $component->attributes = new ComponentAttributeBag;
+
+        $view = $component->render();
+
+        $content = $view([
+            'slot' => new HtmlString($column->render()($column->data())),
+        ]);
+
+        $this->assertStringContainsString('Company', $content);
+        $this->assertStringContainsString('Acme', $content);
+    }
+
+    /** @test */
     public function it_display_text_when_there_are_no_data()
     {
         $data = new LengthAwarePaginator(collect([]), 0, 15);
