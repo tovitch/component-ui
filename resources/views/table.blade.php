@@ -12,7 +12,7 @@
         <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
         <tr>
             @foreach($__children as $child)
-                <th {{ $child->attributes->merge(['class' => ($attributes->get('narrow') ? 'py-2' : 'py-5') . ' px-2 font-semibold whitespace-no-wrap'])->except('wire:click') }}>
+                <th {{ $child->attributes->merge(['class' => ($attributes->get('narrow') ? 'py-2' : 'py-5') . ' px-2 font-semibold whitespace-nowrap'])->except('wire:click') }}>
                     @if($sort = $child->attributes->get('sortable'))
                         <button class="flex items-center font-bold" wire:click="{{ $child->attributes->get('wire:click') }}">
                             <span class="mr-1">{{ $child->name }}</span>
