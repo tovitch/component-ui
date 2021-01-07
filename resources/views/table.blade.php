@@ -48,14 +48,14 @@
 
         <tbody>
         @forelse($data as $row)
-            <tr {{ $resolveRowStyle($loop, $row) }}>
+            <tr {{ $resolveRowStyle($loop, $row) }} wire:key="{{ $resolveKey($row) }}">
                 @foreach($__children as $child)
                     <td {{ $resolveDataStyle($loop, $row, $child) }} {{ $child->alignment() }}>
-                        <div class="hidden" wire:loading.class.remove="hidden">
+                        <div class="hidden" wire:loading.delay.class.remove="hidden">
                             <x-blade-ui-placeholder text />
                         </div>
 
-                        <div wire:loading.remove>
+                        <div wire:loading.delay.remove>
                             @if($child->isDate())
                                 <span title="{{ $row[$child->attribute] }}">
                                     @if($child->date !== '1')

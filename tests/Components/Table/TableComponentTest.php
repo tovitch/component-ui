@@ -85,7 +85,7 @@ class TableComponentTest extends ComponentTestCase
             'slot' => new HtmlString($column->render()($column->data())),
         ]);
 
-        $this->assertStringContainsString('<tr class="bg-gray-100">', $content);
+        $this->assertStringContainsString('<tr class="bg-gray-100"', $content);
     }
 
     /**
@@ -110,7 +110,7 @@ class TableComponentTest extends ComponentTestCase
             'slot' => new HtmlString($column->render()($column->data())),
         ]);
 
-        $this->assertStringContainsString("<tr class=\"{$expectedClasses}\">", $content);
+        $this->assertStringContainsString("<tr class=\"{$expectedClasses}\"", $content);
     }
 
     public function modifiers()

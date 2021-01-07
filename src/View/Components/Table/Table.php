@@ -2,6 +2,7 @@
 
 namespace Tovitch\BladeUI\View\Components\Table;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\Component;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Collection;
@@ -59,6 +60,29 @@ class Table extends Component
                 fn($child) => (new TableColumn($child->name, $child->attribute, $child->date, $child->component))
                     ->withAttributes((array) $child->attributes)
             );
+    }
+
+    /**
+     * Resolve the wire:key attribute.
+     *
+     * @param mixed $row
+     * @return string
+     */
+    public function resolveKey($row)
+    {
+        if ($this->attributes->has('key')) {
+            return data_get($row, $this->attributes->get('key'));
+        }
+
+        if (isset($row['id'])) {
+            return $row['id'];
+        }
+
+        if ($row instanceof Model) {
+            $row = $row->toArray();
+        }
+
+        return md5(json_encode($row));
     }
 
     /**
