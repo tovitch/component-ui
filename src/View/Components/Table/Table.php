@@ -70,8 +70,8 @@ class Table extends Component
      */
     public function resolveKey($row)
     {
-        if ($this->attributes->has('key')) {
-            return data_get($row, $this->attributes->get('key'));
+        if ($key = $this->attributes->get('key')) {
+            return data_get($row, $key);
         }
 
         if (isset($row['id'])) {
