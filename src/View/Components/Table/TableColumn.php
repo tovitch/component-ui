@@ -38,6 +38,11 @@ class TableColumn extends Component
         $this->component = $component;
     }
 
+    public static function make(object $object)
+    {
+        return new self($object->name, $object->attribute, $object->date, $object->component);
+    }
+
     /**
      * Get the view / contents that represent the component.
      *

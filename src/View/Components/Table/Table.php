@@ -57,7 +57,7 @@ class Table extends Component
     {
         return collect(json_decode('[' . trim($slot, ',') . ']'))
             ->map(
-                fn($child) => (new TableColumn($child->name, $child->attribute, $child->date, $child->component))
+                fn($child) => TableColumn::make($child)
                     ->withAttributes((array) $child->attributes)
             );
     }
