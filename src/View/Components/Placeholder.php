@@ -17,7 +17,7 @@ class Placeholder extends Component
         $this->text = $text;
         $this->block = $block;
         $this->round = $round;
-        $this->size = $size ?: rand(10, 15);
+        $this->size = $size ?: (app()->environment('testing') ? 5 : rand(10, 15));
     }
 
     public function render()
