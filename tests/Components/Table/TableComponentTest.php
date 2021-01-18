@@ -15,39 +15,199 @@ class TableComponentTest extends ComponentTestCase
     /** @test */
     public function it_render_the_component()
     {
-        $data = new LengthAwarePaginator(collect([['username' => 'John Doe']]), 1, 15);
+        $data = [['username' => 'John Doe']];
 
-        $component = new Table($data);
-        $column = new TableColumn('User', 'username');
-        $component->attributes = new ComponentAttributeBag;
+        $actual = <<<'blade'
+            <x-blade-ui-table :data="$data">
+                <x-blade-ui-table-column name="User" attribute="username" />
+            </x-blade-ui-table>
+            blade;
 
-        $view = $component->render();
+        $expected = <<<'html'
+<div class="max-w-full overflow-auto overflow-y-hidden shadow rounded-lg" style="-webkit-overflow-scrolling: touch;">
+    <table class="bg-white dark:bg-gray-700 dark:text-white overflow-hidden w-full rounded-lg">
+        <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
+            <tr>
+                <th class="py-5 px-2 font-semibold whitespace-nowrap">
+    User </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wire:key="216247e34f16c61cd61b806711636bb1">
+                <td class="px-2 whitespace-nowrap py-5">
+                    <div class="hidden" wire:loading.delay.class.remove="hidden">
+    <span class="animate-pulse text-transparent bg-gray-300 dark:bg-gray-600 rounded-sm" style="">_____</span>
+</div>
+                    <div wire:loading.delay.remove>
+    John Doe
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+html;
 
-        $content = $view([
-            'slot' => new HtmlString($column->render()($column->data())),
-        ]);
-
-        $this->assertStringContainsString('User', $content);
-        $this->assertStringContainsString('John Doe', $content);
+        $this->assertComponentRenders($expected, $actual, ['data' => $data]);
     }
 
     /** @test */
     public function it_can_display_nested_attributes()
     {
-        $data = new LengthAwarePaginator(collect([['company' => ['name' => 'Acme']]]), 1, 15);
+        $data = [['company' => ['name' => 'Acme']]];
 
-        $component = new Table($data);
-        $column = new TableColumn('Company', 'company.name');
-        $component->attributes = new ComponentAttributeBag;
+        $actual = <<<'blade'
+            <x-blade-ui-table :data="$data">
+                <x-blade-ui-table-column name="Company" attribute="company.name" />
+            </x-blade-ui-table>
+            blade;
 
-        $view = $component->render();
+        $expected = <<<'html'
+<div class="max-w-full overflow-auto overflow-y-hidden shadow rounded-lg" style="-webkit-overflow-scrolling: touch;">
+    <table class="bg-white dark:bg-gray-700 dark:text-white overflow-hidden w-full rounded-lg">
+        <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
+            <tr>
+                <th class="py-5 px-2 font-semibold whitespace-nowrap">
+    Company </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wire:key="36873f1a198d7af9940cdd96852e58d1">
+                <td class="px-2 whitespace-nowrap py-5">
+                    <div class="hidden" wire:loading.delay.class.remove="hidden">
+    <span class="animate-pulse text-transparent bg-gray-300 dark:bg-gray-600 rounded-sm" style="">_____</span>
+</div>
+                    <div wire:loading.delay.remove>
+    Acme
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+html;
 
-        $content = $view([
-            'slot' => new HtmlString($column->render()($column->data())),
-        ]);
+        $this->assertComponentRenders($expected, $actual, ['data' => $data]);
+    }
 
-        $this->assertStringContainsString('Company', $content);
-        $this->assertStringContainsString('Acme', $content);
+    /** @test */
+    public function it_display_formatted_date()
+    {
+        $data = [['created_at' => '2021-01-18 10:42:21']];
+
+        $actual = <<<'blade'
+            <x-blade-ui-table :data="$data">
+                <x-blade-ui-table-column name="Created At" attribute="created_at" date="d/m/Y" />
+            </x-blade-ui-table>
+            blade;
+
+        $expected = <<<'html'
+<div class="max-w-full overflow-auto overflow-y-hidden shadow rounded-lg" style="-webkit-overflow-scrolling: touch;">
+    <table class="bg-white dark:bg-gray-700 dark:text-white overflow-hidden w-full rounded-lg">
+        <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
+            <tr>
+                <th class="py-5 px-2 font-semibold whitespace-nowrap">
+    Created At </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wire:key="e77b986f3c8aa80203773bf825337ada">
+                <td class="px-2 whitespace-nowrap py-5">
+                    <div class="hidden" wire:loading.delay.class.remove="hidden">
+    <span class="animate-pulse text-transparent bg-gray-300 dark:bg-gray-600 rounded-sm" style="">_____</span>
+</div>
+                    <div wire:loading.delay.remove>
+    <span title="2021-01-18 10:42:21">
+    18/01/2021 </span>
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+html;
+
+        $this->assertComponentRenders($expected, $actual, ['data' => $data]);
+    }
+
+    /** @test */
+    public function it_display_nothing_when_the_date_is_null()
+    {
+        $data = [['created_at' => null]];
+
+        $actual = <<<'blade'
+            <x-blade-ui-table :data="$data">
+                <x-blade-ui-table-column name="Created At" attribute="created_at" date="d/m/Y" />
+            </x-blade-ui-table>
+            blade;
+
+        $expected = <<<'html'
+<div class="max-w-full overflow-auto overflow-y-hidden shadow rounded-lg" style="-webkit-overflow-scrolling: touch;">
+    <table class="bg-white dark:bg-gray-700 dark:text-white overflow-hidden w-full rounded-lg">
+        <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
+            <tr>
+                <th class="py-5 px-2 font-semibold whitespace-nowrap">
+    Created At </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wire:key="94cbba0ff15cd0209d484e1eec4d78d7">
+                <td class="px-2 whitespace-nowrap py-5">
+                    <div class="hidden" wire:loading.delay.class.remove="hidden">
+    <span class="animate-pulse text-transparent bg-gray-300 dark:bg-gray-600 rounded-sm" style="">_____</span>
+</div>
+                    <div wire:loading.delay.remove>
+    <span title="">
+    </span>
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+html;
+
+        $this->assertComponentRenders($expected, $actual, ['data' => $data]);
+    }
+
+    /** @test */
+    public function it_display_the_provided_empty_message_when_the_date_is_null()
+    {
+        $data = [['created_at' => null]];
+
+        $actual = <<<'blade'
+            <x-blade-ui-table :data="$data">
+                <x-blade-ui-table-column name="Created At" attribute="created_at" date="d/m/Y" empty-message="Date is empty" />
+            </x-blade-ui-table>
+            blade;
+
+        $expected = <<<'html'
+<div class="max-w-full overflow-auto overflow-y-hidden shadow rounded-lg" style="-webkit-overflow-scrolling: touch;">
+    <table class="bg-white dark:bg-gray-700 dark:text-white overflow-hidden w-full rounded-lg">
+        <thead class="text-gray-300 bg-gray-800 dark:bg-gray-600 text-sm font-medium text-left">
+            <tr>
+                <th class="py-5 px-2 font-semibold whitespace-nowrap" empty-message="Date is empty">
+    Created At </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr wire:key="94cbba0ff15cd0209d484e1eec4d78d7">
+                <td class="px-2 whitespace-nowrap py-5 ">
+                    <div class="hidden" wire:loading.delay.class.remove="hidden">
+    <span class="animate-pulse text-transparent bg-gray-300 dark:bg-gray-600 rounded-sm" style="">_____</span>
+</div>
+                    <div wire:loading.delay.remove>
+    <span title="">
+    Date is empty </span>
+</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+html;
+
+        $this->assertComponentRenders($expected, $actual, ['data' => $data]);
     }
 
     /** @test */

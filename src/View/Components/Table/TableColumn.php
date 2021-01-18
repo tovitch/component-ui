@@ -2,9 +2,7 @@
 
 namespace Tovitch\BladeUI\View\Components\Table;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\Carbon;
 use Illuminate\View\Component;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\App;
@@ -93,6 +91,23 @@ class TableColumn extends Component
     public function isDate(): bool
     {
         return $this->date !== null;
+    }
+
+    /**
+     * Get the date attribute.
+     *
+     * @param $date
+     * @return string
+     */
+    public function getDateAttributes($date): string
+    {
+        if (! $date) {
+            return $this->attributes->get('empty-message', '');
+        }
+
+        $carbon = Carbon::parse($date);
+
+        return $this->date !== '1' ? $carbon->format($this->date) : $carbon;
     }
 
     /**

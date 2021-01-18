@@ -57,12 +57,8 @@
 
                         <div wire:loading.delay.remove>
                             @if($child->isDate())
-                                <span title="{{ $row[$child->attribute] }}">
-                                    @if($child->date !== '1')
-                                        {{ \Carbon\Carbon::parse(data_get($row, $child->attribute))->format($child->date) }}
-                                    @else
-                                        {{ \Carbon\Carbon::parse(data_get($row, $child->attribute)) }}
-                                    @endif
+                                <span title="{{ data_get($row, $child->attribute) }}">
+                                    {{ $child->getDateAttributes(data_get($row, $child->attribute)) }}
                                 </span>
                             @elseif($child->isBoolean())
                                 <span title="{{ (bool) data_get($row, $child->attribute) ? 'Actif' : 'Inactif' }}">
